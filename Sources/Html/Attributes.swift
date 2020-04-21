@@ -572,6 +572,27 @@ public enum InputType: String {
   case week
 }
 
+public struct Accept: RawRepresentable {
+  public let rawValue: String
+
+  public init(rawValue: String) {
+    self.rawValue = rawValue
+  }
+
+  public static let audio = Accept(rawValue: "audio/*")
+  public static let image = Accept(rawValue: "image/*")
+  public static let video = Accept(rawValue: "video/*")
+
+  public static func file(_ type: String) -> Accept {
+    return .init(rawValue: type.hasPrefix(".") ? type : "." + type)
+  }
+
+  public static func mime(_ type: MediaType) -> Accept {
+    let mimeTypeOnly = type.description.split(separator: ";")[0]
+    return .init(rawValue: String(mimeTypeOnly))
+  }
+}
+
 extension Attribute where Element == Tag.Input {
   /// Whether the command or control is checked.
   ///
@@ -596,6 +617,15 @@ extension Attribute where Element == Tag.Input {
 
   public static func type(_ value: InputType) -> Attribute {
     return .init("type", value.rawValue)
+  }
+
+  /// Pattern or file types to be selected (only for type="file")
+  ///
+  /// - Parameter value:
+  /// 	The file extension or media type the user can select,
+  ///   such as ".pdf" or "image/*"
+  public static func accept(_ value: Accept...) -> Attribute {
+    return .init("accept", value.map { $0.rawValue }.joined(separator: ", "))
   }
 }
 
