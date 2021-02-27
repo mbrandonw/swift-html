@@ -1400,7 +1400,10 @@ extension Attribute where Element: HasSrcset {
   ///
   /// - Parameter value: Images to use in different situations (e.g., high-resolution displays, small monitors, etc).
   public static func srcset(_ value: [String: Size]) -> Attribute {
-    return .init("srcset", value.map { url, size in url + " " + size.description }.joined(separator: ", "))
+    /// Sort by size, to aid tests with consistent output
+    return .init("srcset", value
+                  .sorted { $0.value.description > $1.value.description }
+                  .map { url, size in url + " " + size.description }.joined(separator: ", "))
   }
 }
 

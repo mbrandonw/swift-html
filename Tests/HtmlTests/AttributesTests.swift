@@ -47,6 +47,18 @@ final class AttributesTests: XCTestCase {
       """,
       render(.img(attributes: [.crossorigin(.useCredentials)]))
     )
+    XCTAssertEqual(
+      """
+      <img src="src1" srcset="src3 3x, src2 2x, src1 1x" height="42" width="43">
+      """,
+      render(.img(attributes: [.src("src1"), .srcset(["src3": .x(3), "src2": .x(2), "src1": .x(1)]), .height(42), .width(43)]))
+    )
+    XCTAssertEqual(
+      """
+      <img src="src1" srcset="src2 84w, src1 42w, src3 126w" height="42" width="43">
+      """,
+      render(.img(attributes: [.src("src1"), .srcset(["src1": .w(42), "src2": .w(84), "src3": .w(126)]), .height(42), .width(43)]))
+    )
 
     XCTAssertEqual(
       """
