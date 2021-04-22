@@ -30,8 +30,7 @@ test-ios: xcodeproj
 
 test-swift:
 	swift test \
-		--enable-pubgrub-resolver \
-		--enable-test-discovery \
-		--parallel
+		--parallel \
+		--enable-test-discovery
 
 test-all: test-linux test-macos test-ios test-swift

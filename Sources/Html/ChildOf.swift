@@ -112,6 +112,7 @@ extension ChildOf where Element == Tag.Figure {
 }
 
 public enum Viewport {
+  case fit(Fit)
   case height(Height)
   case initialScale(Double)
   case maximumScale(Double)
@@ -155,8 +156,16 @@ public enum Viewport {
     }
   }
 
+  public enum Fit: String {
+    case auto
+    case contain
+    case cover
+  }
+
   public var rawValue: String {
     switch self {
+    case let .fit(fit):
+      return "viewport-fit=" + fit.rawValue
     case let .height(px):
       return "height=" + px.rawValue
     case let .initialScale(scale):
